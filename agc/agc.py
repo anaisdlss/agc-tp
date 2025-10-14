@@ -140,8 +140,8 @@ def get_identity(alignment_list: List[str]) -> float:
 
 
 def abundance_greedy_clustering(amplicon_file: Path, minseqlen: int,
-                                mincount: int, _chunk_size: int,
-                                _kmer_size: int) -> List:
+                                mincount: int, chunk_size: int,
+                                kmer_size: int) -> List:
     """Compute an abundance greedy clustering regarding sequence count and 
     identity.
     Identify OTU sequences.
