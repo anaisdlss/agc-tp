@@ -54,7 +54,7 @@ Avec `--id` qui fixe seuil d'identité minimal et `--blast6out` qui génère les
 résultats au format csv.
 
 ## Annotation automatique des colonnes TSV
-Pour ajouter les noms des colonnes au fichier VSEARCH:
+Pour ajouter les noms des colonnes au fichier VSEARCH `resultat.tsv`:
 ```bash
 python3 agc/annotation.py
 ```
