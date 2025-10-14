@@ -1,38 +1,63 @@
-# Calcul des OTU 
+# AGC-TP: OTU Clustering et Analyse 16S
 
-Vous trouverez la description complète du TP [ici](https://docs.google.com/document/d/1qWNqPZ9Ecd-yZ5Hpl6n2zd7ZGtHPjf3yaW1ulKRdWnk/edit?usp=sharing).
+## Auteurs
+**Anaïs DELASSUS** – anais.delassus@etu.u-paris.fr  
+Université Paris Cité
 
-## Introduction
+## Description du projet
+Ce projet réalise un **clustering OTU** sur des séquences 16S amplifiées.  
+Les étapes principales sont :
 
-L’objectif de ce TP sera de calculer les OTU obtenues à partir d’un séquençage “mock”. Nous n’avons amplifié que les bactéries (et non les champignons). 8 espèces sont ainsi attendues.
+1. Lecture du fichier FASTA compressé (`.fasta.gz`)  
+2. Dé-duplication des séquences (full-length dereplication)  
+3. Identification des séquences chimériques (optionnelle / non implémentée cette année)  
+4. Regroupement glouton des séquences non-chimériques (abundance greedy clustering)  
+5. Écriture des OTUs dans un fichier FASTA  
+6. Alignement des OTUs sur une banque de références 16S (`mock_16S.fasta`) avec **VSEARCH**, et annotation automatique des colonnes  
 
-Vous devrez développer un programme effectuant une dé-duplication en séquence complète (“dereplication full length”), une recherche des séquences chimériques et un regroupement basé sur un algorithme glouton (“Abundance Greedy Clustering”).  
+Le programme est écrit en **Python 3.9+**, utilise `nwalign3` pour les alignements globaux et `gzip` pour lire les fichiers compressés.
 
+---
 
-## Installation des dépendances
+## Installation
 
-Vous utiliserez les librairies nwalign3, pytest et pylint de Python:
+### Cloner le projet
+```bash
+git clone https://github.com/anaisdlss/agc-tp.git
+cd agc-tp
+
+### Créer et activer l'environnement Conda
+```bash
+conda env create -f environment.yml
+conda activate agc
+````
+
+---
+
+## Exécution des scripts
+
+### Calcul des OTUs
+```bash
+python3 agc/agc.py -i data/amplicon.fasta.gz -o OTU.fasta
 ```
-pip3 install --user nwalign3 pytest pylint pytest-cov
+Vous pouvez changer la longueur minimale des séquences (400 par défaut) avec -s
+et changer le comptage minimal de la déduplication (10 par défaut) avec -m.
+
+## Alignement OTUs sur la banque de référence avec VSEARCH
+```bash
+vsearch --usearch_global OTU.fasta \
+--db data/mock_16S.fasta \
+--id 0.8 \
+--blast6out resultat.tsv
+````
+Avec `--id` qui fixe seuil d'identité minimal et `--blast6out` qui génère les
+résultats au format csv.
+
+## Annotation automatique des colonnes TSV
+Pour ajouter les noms des colonnes au fichier VSEARCH:
+```bash
+python3 agc/annotation.py
 ```
 
-## Utilisation
 
-Vous devrez développer un programme python3 effectuant une dé-duplication en séquence complète (“dereplication full length”), une recherche des séquences chimériques et un regroupement basé sur un algorithme glouton (“Abundance Greedy Clustering”). Il prendra pour arguments:
-
- -i, -amplicon_file fichier contenant des séquences au format FASTA
- -s, -minseqlen Longueur minimum des séquences (optionnel - valeur par défaut 400)
- -m, -mincount Comptage minimum des séquences (optionnel - valeur par défaut 10)
- -c, -chunk_size Taille des partitions de séquence (optionnel - valeur par défaut 100)
- -k, -kmer_size Longueur des “kmer” (optionnel - valeur par défaut 8)
- -o, -output_file fichier de sortie avec les OTU au format FASTA
-
- ## Tests
-
-Vous testerez vos fonctions à l’aide de la commande pytest --cov=agc à exécuter dans le dossier agc-tp/. En raison de cette contrainte, les noms des fonctions ne seront pas libre. Il sera donc impératif de respecter le nom des fonctions “imposées”, de même que leur caractéristique et paramètres. 
-Vous vérifierez également la qualité syntaxique de votre programme en exécutant la commande: pylint agc.py
-
-## Contact
-
-En cas de questions, vous pouvez me contacter par email: amine.ghozlane[at]pasteur.fr
 
