@@ -1,6 +1,5 @@
-# AGC-TP: OTU Clustering et Analyse 16S
+# AGC-TP: Calcul OTU et Analyse 16S
 
-## Auteurs
 **Anaïs DELASSUS** – anais.delassus@etu.u-paris.fr  
 Université Paris Cité
 
@@ -25,6 +24,7 @@ Le programme est écrit en **Python 3.9+**, utilise `nwalign3` pour les aligneme
 ```bash
 git clone https://github.com/anaisdlss/agc-tp.git
 cd agc-tp
+```
 
 ### Créer et activer l'environnement Conda
 ```bash
