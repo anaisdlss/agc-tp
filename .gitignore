@@ -1,3 +1,9 @@
 __py_cache__
 i*.pyc
 .coverage
+
+OTU.fasta
+agc/__pycache__/
+resultat.tsv
+tests/__pycache__/
+tests/test.fna

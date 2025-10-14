@@ -1,0 +1,14 @@
+name: agc
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - numpy
+  - nwalign3
+  - vsearch
+  - pip
+  - pip:
+      - pytest
+      - pylint
+      - pytest-cov
