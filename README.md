@@ -1,63 +1,75 @@
-# AGC-TP: Calcul OTU et Analyse 16S
+Absolument. Voici le document en version anglaise.
+
+-----
+
+# AGC-TP: OTU Calculation and 16S Analysis
 
 **Anaïs DELASSUS** – anais.delassus@etu.u-paris.fr  
 Université Paris Cité
 
-## Description du projet
-Ce projet réalise un **clustering OTU** sur des séquences 16S amplifiées.  
-Les étapes principales sont :
+## Project Description
 
-1. Lecture du fichier FASTA compressé (`.fasta.gz`)  
-2. Dé-duplication des séquences (full-length dereplication)  
-3. Identification des séquences chimériques (optionnelle / non implémentée cette année)  
-4. Regroupement glouton des séquences non-chimériques (abundance greedy clustering)  
-5. Écriture des OTUs dans un fichier FASTA  
-6. Alignement des OTUs sur une banque de références 16S (`mock_16S.fasta`) avec **VSEARCH**, et annotation automatique des colonnes  
+This project performs **OTU clustering** on amplified 16S sequences.  
+The main steps are:
 
-Le programme est écrit en **Python 3.9+**, utilise `nwalign3` pour les alignements globaux et `gzip` pour lire les fichiers compressés.
+1.  Reading the compressed FASTA file (`.fasta.gz`)
+2.  Sequence de-duplication (full-length dereplication)
+3.  Identification of chimeric sequences (optional / not implemented this year)
+4.  Abundance greedy clustering of non-chimeric sequences
+5.  Writing the OTUs to a FASTA file
+6.  Aligning the OTUs against a 16S reference bank (`mock_16S.fasta`) using **VSEARCH**, and automatic column annotation
 
----
+The program is written in **Python 3.9+**, uses `nwalign3` for global alignments and `gzip` to read compressed files.
+
+-----
 
 ## Installation
 
-### Cloner le projet
+### Clone the Project
+
 ```bash
 git clone https://github.com/anaisdlss/agc-tp.git
 cd agc-tp
 ```
 
-### Créer et activer l'environnement Conda
+### Create and Activate the Conda Environment
+
 ```bash
 conda env create -f environnement.yml
 conda activate agc
-````
+```
 
----
+-----
 
-## Exécution des scripts
+## Script Execution
 
-### Calcul des OTUs
+### OTU Calculation
+
 ```bash
 python3 agc/agc.py -i data/amplicon.fasta.gz -o OTU.fasta
 ```
-Vous pouvez changer la longueur minimale des séquences (400 par défaut) avec -s
-et changer le comptage minimal de la déduplication (10 par défaut) avec -m.
 
-## Alignement OTUs sur la banque de référence avec VSEARCH
+You can change the minimum sequence length (400 by default) with `-s`
+and change the minimum count for de-duplication (10 by default) with `-m`.
+
+## OTU Alignment against the Reference Bank with VSEARCH
+
 ```bash
 vsearch --usearch_global OTU.fasta \
 --db data/mock_16S.fasta \
 --id 0.8 \
 --blast6out resultat.tsv
-````
-Avec `--id` qui fixe seuil d'identité minimal et `--blast6out` qui génère les
-résultats au format csv.
+```
 
-## Annotation automatique des colonnes TSV
-Pour ajouter les noms des colonnes au fichier VSEARCH `resultat.tsv`:
+Where `--id` sets the minimum identity threshold and `--blast6out` generates the
+results in CSV format.
+
+## Automatic Annotation of TSV Columns
+
+To add column headers to the VSEARCH output file `resultat.tsv`:
+
 ```bash
 python3 agc/annotation.py
 ```
 
-
-
+-----
