@@ -1,6 +1,3 @@
-Absolument. Voici le document en version anglaise.
-
------
 
 # AGC-TP: OTU Calculation and 16S Analysis
 
