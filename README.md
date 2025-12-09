@@ -28,7 +28,7 @@ cd agc-tp
 
 ### Créer et activer l'environnement Conda
 ```bash
-conda env create -f environment.yml
+conda env create -f environnement.yml
 conda activate agc
 ````
 
